@@ -1,0 +1,89 @@
+function runProgram(input) {
+    
+    input=input.trim().split("\n");
+    
+    var array = input[0].trim().split(" ").map(Number);
+    var target =+ input[1];
+    var n =array.length;
+
+   var pairs = printPairs(array,n,target);
+   console.log(pairs);
+   
+   var pairs2 = printPairs(array, n, target);
+   var sortedarray = mergeAndSort(pairs2);
+   console.log(sortedarray);
+  }
+  
+  
+  // For printing the pairs 
+  
+ function printPairs(arr, n, target) {
+  var pairs = [];
+
+ for (var a = 0;a< n;a++) {
+     
+    for (var b =a+ 1; b< n;b++) {
+        
+        
+        //If we need pairs without considering absolute value
+        
+    //   if (arr[a] + arr[b] === target) {
+    //     pairs.push([arr[a], arr[b]]);
+    //   }
+    
+        //If we need pairs considering absolute value
+    
+    //   if(Math.abs(arr[a] + arr[b]) === Math.abs(target)){
+    //     pairs.push([arr[a], arr[b]]);
+    //   }
+    
+    if (Math.abs(arr[a] + arr[b]) === Math.abs(target)) {
+        pairs.push([arr[a], arr[b]]);
+      }
+    }
+  }
+    pairs = removeDuplicates(pairs);
+
+  return pairs;
+}
+
+// for merging and sort the pairs 
+
+function mergeAndSort(pairs) {
+  var mergedArray = [];
+
+  for (var a=0;a<pairs.length; a++) {
+    mergedArray.push(...pairs[a]);
+  }
+
+  mergedArray.sort((a, b) => a - b);
+
+  return mergedArray;
+}
+
+// for removing duplicates from the pair
+function removeDuplicates(arr) {
+  return [...new Set(arr.map(JSON.stringify))].map(JSON.parse);
+}
+
+if (process.env.USER === "") {
+    runProgram(``);
+  } else {
+    process.stdin.resume();
+    process.stdin.setEncoding("ascii");
+    let read = "";
+    process.stdin.on("data", function (input) {
+      read += input;
+    });
+    process.stdin.on("end", function () {
+      read = read.replace(/\n$/, "");
+      read = read.replace(/\n$/, "");
+      runProgram(read);
+    });
+    process.on("SIGINT", function () {
+      read = read.replace(/\n$/, "");
+      runProgram(read);
+      process.exit(0);
+    });
+  }
+
